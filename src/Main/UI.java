@@ -2,6 +2,8 @@ package Main; // Déclaration du package dans lequel se trouve la classe UI
 
 import javax.swing.*; // Importation de classes Swing pour les composants graphiques
 import java.awt.*; // Importation de classes AWT pour les éléments de base de l'interface graphique
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public class UI { // Déclaration de la classe UI
 
@@ -15,7 +17,7 @@ public class UI { // Déclaration de la classe UI
     public UI(GameManager gm){ // Définition du constructeur prenant une instance de GameManager en argument
         this.gm = gm; // Initialisation de la variable gm avec l'instance de GameManager passée en argument
         createMainFeild(); // Appel à la méthode pour créer le champ principal de l'interface utilisateur
-        createBackgound(); // Appel à la méthode pour créer le fond de l'interface utilisateur
+        generateScereen();
         window.setVisible(true); // Rend la fenêtre visible
     }
 
@@ -39,20 +41,83 @@ public class UI { // Déclaration de la classe UI
         window.add(messageText); // Ajout du composant à la fenêtre
     }
 
-    public void createBackgound(){ // Définition de la méthode pour créer le fond de l'interface utilisateur
-        bgPanel[1]= new JPanel(); // Création d'un nouveau panneau pour le fond
-        bgPanel[1].setBounds(50,50,700,350); // Définition de la position et de la taille du panneau
-        bgPanel[1].setBackground(Color.ORANGE); // Définit la couleur de fond du panneau
-        bgPanel[1].setLayout(null); // Définit le gestionnaire de disposition comme null pour permettre un positionnement manuel des composants
-        window.add(bgPanel[1]); // Ajout du panneau à la fenêtre
+    public void createBackgound( int bgNum , String bgFileName){ // Définition de la méthode pour créer le fond de l'interface utilisateur
+        bgPanel[bgNum]= new JPanel(); // Création d'un nouveau panneau pour le fond
+        bgPanel[bgNum].setBounds(50,50,700,350); // Définition de la position et de la taille du panneau
+        bgPanel[bgNum].setBackground(Color.ORANGE); // Définit la couleur de fond du panneau
+        bgPanel[bgNum].setLayout(null); // Définit le gestionnaire de disposition comme null pour permettre un positionnement manuel des composants
+        window.add(bgPanel[bgNum]); // Ajout du panneau à la fenêtre
 
-        bgLabel[1]= new JLabel(); // Création d'une nouvelle étiquette pour le fond
-        bgLabel[1].setBounds(0,0,700,350); // Définition de la position et de la taille de l'étiquette
+        bgLabel[bgNum]= new JLabel(); // Création d'une nouvelle étiquette pour le fond
+        bgLabel[bgNum].setBounds(0,0,700,350); // Définition de la position et de la taille de l'étiquette
 
         // Chargement de l'image de fond et configuration de l'étiquette
-        ImageIcon bgIcon = new ImageIcon(getClass().getClassLoader().getResource("backgrounds/bg.png"));
-        bgLabel[1].setIcon(bgIcon);
+        ImageIcon bgIcon = new ImageIcon(getClass().getClassLoader().getResource(bgFileName));
+        bgLabel[bgNum].setIcon(bgIcon);
 
-        bgPanel[1].add(bgLabel[1]); // Ajout de l'étiquette au panneau
+
+
+    }
+    public  void createObject(int bgNum, int objx, int objy , int objWidth , int objHeight, String objFileName ,
+                              String choice1Name ,    String choice2Name ,    String choice3Name){
+
+         //  CREATE PUP MENU
+
+        JPopupMenu popMenu = new JPopupMenu();
+
+        //  CREATE PUP MENU ITEMS
+
+        JMenuItem menuItem[] = new JMenuItem[4];
+
+        menuItem[1] = new JMenuItem(choice1Name);
+        popMenu.add(menuItem[1]);
+
+        menuItem[2] = new JMenuItem(choice2Name);
+        popMenu.add(menuItem[2]);
+
+        menuItem[3] = new JMenuItem(choice3Name);
+        popMenu.add(menuItem[3]);
+
+
+       // CREATE OBJECTS
+        JLabel objectLabel = new JLabel();
+        objectLabel.setBounds(objx,objy,objWidth,objHeight);
+
+        ImageIcon objectIcon = new ImageIcon(getClass().getClassLoader().getResource(objFileName));
+        objectLabel.setIcon(objectIcon);
+
+        objectLabel.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            }
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if ( SwingUtilities.isRightMouseButton(e)) {
+                    popMenu.show(objectLabel, e.getX(),e.getY());
+                }
+            }
+            @Override
+            public void mouseReleased(MouseEvent e) {
+            }
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+            }
+        });
+
+        bgPanel[bgNum].add(objectLabel);
+        bgPanel[bgNum].add(bgLabel[bgNum]);
+
+
+
+
+    }
+    public  void generateScereen(){
+
+        createBackgound(1, "backgrounds/bg.png");
+        createObject(1,440,140,200,200,"obj.png","fuck3","fuck2","fuck1");
+
     }
 }
