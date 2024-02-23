@@ -117,7 +117,9 @@ public class UI { // Déclaration de la classe UI
     public  void generateScereen(){
 
         createBackgound(1, "backgrounds/bg.png");
-        createObject(1,440,140,200,200,"obj.png","fuck3","fuck2","fuck1");
+        createObject(1,440,140,200,200,"castle.png","","","");
+        createObject(1,78,180,150,150,"character.png","Look","Talk","Rest");
+        createObject(1,310,280,70,70,"monster.png","","","");
 
     }
 }
